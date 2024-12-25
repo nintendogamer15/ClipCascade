@@ -1,0 +1,172 @@
+{
+  "id" : "org.clipcascade.ClipCascade",
+  "runtime" : "org.freedesktop.Platform",
+  "runtime-version" : "23.08",
+  "runtime-commit" : "e28cd79b3cf25c171c5179a820a09e21d83e23747282593deae22605a4b15b00",
+  "sdk" : "org.freedesktop.Sdk",
+  "sdk-commit" : "cd912210aba6f0bd13806966be67320a2c1b5f76528e050e557234cc044cf14c",
+  "build-options" : {
+    "no-debuginfo" : true
+  },
+  "command" : "clipcascade",
+  "modules" : [
+    {
+      "name" : "tcl",
+      "subdir" : "unix",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--enable-threads",
+        "--enable-64bit"
+      ],
+      "sources" : [
+        {
+          "url" : "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
+          "sha256" : "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "tk",
+      "subdir" : "unix",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--enable-threads",
+        "--enable-64bit"
+      ],
+      "sources" : [
+        {
+          "url" : "https://prdownloads.sourceforge.net/tcl/tk8.6.13-src.tar.gz",
+          "sha256" : "2e65fa069a23365440a3c56c556b8673b5e32a283800d8d9b257e3f584ce0675",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "python3",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--prefix=/app",
+        "--enable-shared",
+        "--with-ensurepip=yes",
+        "--with-system-expat",
+        "--with-system-ffi",
+        "--enable-optimizations",
+        "--with-tcltk-includes=/app/include",
+        "--with-tcltk-libs=/app/lib"
+      ],
+      "sources" : [
+        {
+          "url" : "https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tar.xz",
+          "sha256" : "85cd12e9cf1d6d5a45f17f7afe1cebe7ee628d3282281c492e86adf636defa3f",
+          "type" : "archive"
+        }
+      ],
+      "build-options" : {
+        "env" : {
+          "PYTHON_CONFIGURE_OPTS" : "--enable-shared"
+        }
+      },
+      "cleanup" : [
+        "/lib/python3.11/test",
+        "/lib/python3.11/config-3.11-*",
+        "/lib/python3.11/site-packages/test",
+        "/lib/python3.11/site-packages/*/test",
+        "/lib/python3.11/site-packages/*/tests",
+        "/lib/python3.11/__pycache__",
+        "*.a",
+        "*.la"
+      ]
+    },
+    {
+      "name" : "gtk-deps",
+      "buildsystem" : "simple",
+      "modules" : [
+        {
+          "name" : "gtk3",
+          "buildsystem" : "meson",
+          "config-opts" : [
+            "-Dman=false",
+            "-Dgtk_doc=false"
+          ],
+          "sources" : [
+            {
+              "url" : "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.38.tar.xz",
+              "sha256" : "ce11decf018b25bdd8505544a4f87242854ec88be054d9ade5f3a20444dd8ee7",
+              "type" : "archive"
+            }
+          ],
+          "cleanup" : [
+            "/share/gtk-doc"
+          ]
+        }
+      ],
+      "build-commands" : [
+        "echo \"Installing GTK dependencies\""
+      ]
+    },
+    {
+      "name" : "python-deps",
+      "buildsystem" : "simple",
+      "sources" : [
+        {
+          "dest" : "files/wheelhouse",
+          "path" : "./wheelhouse",
+          "type" : "dir"
+        }
+      ],
+      "build-commands" : [
+        "pip3 install --no-index --find-links=\"files/wheelhouse\" --prefix=${FLATPAK_DEST} \\ urllib3 charset-normalizer idna certifi Pillow plyer pycryptodome pystray requests websocket-client xxhash pyfiglet"
+      ]
+    },
+    {
+      "name" : "clipcascade",
+      "buildsystem" : "simple",
+      "sources" : [
+        {
+          "path" : "ClipCascade_Desktop/src",
+          "type" : "dir"
+        },
+        {
+          "path" : "logo/logo.png",
+          "type" : "file"
+        },
+        {
+          "path" : "org.clipcascade.ClipCascade.desktop",
+          "type" : "file"
+        }
+      ],
+      "build-options" : {
+        "env" : {
+          "PYTHONPATH" : "/app/lib/python3.11/site-packages:/app/lib/clipcascade"
+        }
+      },
+      "build-commands" : [
+        "sed -i 's/\\r$//' main.py",
+        "chmod +x main.py",
+        "install -D main.py /app/bin/clipcascade",
+        "install -D logo.png /app/share/icons/hicolor/256x256/apps/org.clipcascade.ClipCascade.png",
+        "install -D org.clipcascade.ClipCascade.desktop /app/share/applications/org.clipcascade.ClipCascade.desktop",
+        "mkdir -p /app/lib/clipcascade",
+        "cp -r cli core gui clipboard stomp_ws utils /app/lib/clipcascade/"
+      ]
+    }
+  ],
+  "cleanup" : [
+    "/include",
+    "/lib/pkgconfig",
+    "*.la",
+    "*.a"
+  ],
+  "finish-args" : [
+    "--share=ipc",
+    "--socket=x11",
+    "--socket=wayland",
+    "--share=network",
+    "--talk-name=org.freedesktop.portal.Desktop",
+    "--talk-name=org.freedesktop.portal.Settings",
+    "--talk-name=org.kde.StatusNotifierWatcher",
+    "--talk-name=org.freedesktop.Notifications"
+  ],
+  "source-date-epoch" : 1735116903
+}

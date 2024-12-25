@@ -1,0 +1,5 @@
+[Runtime]
+name=org.clipcascade.ClipCascade.Locale
+
+[ExtensionOf]
+ref=app/org.clipcascade.ClipCascade/x86_64/master

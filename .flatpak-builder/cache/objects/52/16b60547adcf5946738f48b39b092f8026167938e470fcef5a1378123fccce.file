@@ -1,0 +1,267 @@
+{
+  "id" : "org.clipcascade.ClipCascade",
+  "runtime" : "org.freedesktop.Platform",
+  "runtime-version" : "23.08",
+  "runtime-commit" : "e28cd79b3cf25c171c5179a820a09e21d83e23747282593deae22605a4b15b00",
+  "sdk" : "org.freedesktop.Sdk",
+  "sdk-commit" : "cd912210aba6f0bd13806966be67320a2c1b5f76528e050e557234cc044cf14c",
+  "build-options" : {
+    "no-debuginfo" : true
+  },
+  "command" : "python3",
+  "modules" : [
+    {
+      "name" : "python3-modules",
+      "buildsystem" : "simple",
+      "sources" : [
+        {
+          "path" : "wheelhouse/pillow-11.0.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/plyer-2.1.0-py2.py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/pycryptodome-3.21.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/pystray-0.19.5-py2.py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/requests-2.32.3-py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/websocket_client-1.8.0-py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/xxhash-3.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/certifi-2024.12.14-py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/charset_normalizer-3.4.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/idna-3.10-py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/six-1.17.0-py2.py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/urllib3-2.3.0-py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/python_xlib-0.33-py2.py3-none-any.whl",
+          "type" : "file"
+        },
+        {
+          "path" : "wheelhouse/pyfiglet-1.0.2-py3-none-any.whl",
+          "type" : "file"
+        }
+      ],
+      "build-commands" : [
+        "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} Pillow plyer pycryptodome pystray requests websocket_client xxhash pyfiglet"
+      ]
+    },
+    {
+      "name" : "tcl",
+      "subdir" : "unix",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--enable-threads",
+        "--enable-64bit"
+      ],
+      "sources" : [
+        {
+          "url" : "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
+          "sha256" : "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "tk",
+      "subdir" : "unix",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--enable-threads",
+        "--enable-64bit"
+      ],
+      "sources" : [
+        {
+          "url" : "https://prdownloads.sourceforge.net/tcl/tk8.6.13-src.tar.gz",
+          "sha256" : "2e65fa069a23365440a3c56c556b8673b5e32a283800d8d9b257e3f584ce0675",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "python3",
+      "buildsystem" : "autotools",
+      "config-opts" : [
+        "--prefix=/app",
+        "--enable-shared",
+        "--with-ensurepip=yes",
+        "--with-system-expat",
+        "--with-system-ffi",
+        "--enable-optimizations",
+        "--with-tcltk-includes=/app/include",
+        "--with-tcltk-libs=/app/lib"
+      ],
+      "sources" : [
+        {
+          "url" : "https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tar.xz",
+          "sha256" : "85cd12e9cf1d6d5a45f17f7afe1cebe7ee628d3282281c492e86adf636defa3f",
+          "type" : "archive"
+        }
+      ],
+      "build-options" : {
+        "env" : {
+          "PYTHON_CONFIGURE_OPTS" : "--enable-shared"
+        }
+      },
+      "cleanup" : [
+        "/lib/python3.11/test",
+        "/lib/python3.11/config-3.11-*",
+        "/lib/python3.11/site-packages/test",
+        "/lib/python3.11/site-packages/*/test",
+        "/lib/python3.11/site-packages/*/tests",
+        "/lib/python3.11/__pycache__",
+        "*.a",
+        "*.la"
+      ]
+    },
+    {
+      "name" : "intltool",
+      "buildsystem" : "autotools",
+      "sources" : [
+        {
+          "url" : "https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz",
+          "sha256" : "67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "atk",
+      "buildsystem" : "meson",
+      "config-opts" : [
+        "-Dintrospection=true"
+      ],
+      "sources" : [
+        {
+          "url" : "https://download.gnome.org/sources/atk/2.38/atk-2.38.0.tar.xz",
+          "sha256" : "ac4de2a4ef4bd5665052952fe169657e65e895c5057dffb3c2a810f6191a0c36",
+          "type" : "archive"
+        }
+      ]
+    },
+    {
+      "name" : "glib",
+      "buildsystem" : "meson",
+      "sources" : [
+        {
+          "url" : "https://download.gnome.org/sources/glib/2.76/glib-2.76.4.tar.xz",
+          "sha256" : "5a5a191c96836e166a7771f7ea6ca2b0069c603c7da3cba1cd38d1694a395dda",
+          "type" : "archive"
+        }
+      ],
+      "cleanup" : [
+        "/share/gtk-doc"
+      ]
+    },
+    {
+      "name" : "gtk3",
+      "buildsystem" : "meson",
+      "config-opts" : [
+        "-Dman=false",
+        "-Dgtk_doc=false",
+        "-Dintrospection=true"
+      ],
+      "sources" : [
+        {
+          "url" : "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.38.tar.xz",
+          "sha256" : "ce11decf018b25bdd8505544a4f87242854ec88be054d9ade5f3a20444dd8ee7",
+          "type" : "archive"
+        }
+      ],
+      "cleanup" : [
+        "/share/gtk-doc"
+      ]
+    },
+    {
+      "name" : "gobject-introspection",
+      "buildsystem" : "meson",
+      "sources" : [
+        {
+          "url" : "https://download.gnome.org/sources/gobject-introspection/1.76/gobject-introspection-1.76.1.tar.xz",
+          "sha256" : "196178bf64345501dcdc4d8469b36aa6fe80489354efe71cb7cb8ab82a3738bf",
+          "type" : "archive"
+        }
+      ],
+      "cleanup" : [
+        "/share/gtk-doc"
+      ]
+    },
+    {
+      "name" : "clipcascade",
+      "buildsystem" : "simple",
+      "sources" : [
+        {
+          "path" : ".",
+          "type" : "dir"
+        }
+      ],
+      "build-commands" : [
+        "install -D ClipCascade_Desktop/src/main.py ${FLATPAK_DEST}/bin/clipcascade",
+        "chmod +x ${FLATPAK_DEST}/bin/clipcascade",
+        "cp -r ClipCascade_Desktop/src/cli ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "cp -r ClipCascade_Desktop/src/clipboard ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "cp -r ClipCascade_Desktop/src/core ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "cp -r ClipCascade_Desktop/src/gui ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "cp -r ClipCascade_Desktop/src/stomp_ws ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "cp -r ClipCascade_Desktop/src/utils ${FLATPAK_DEST}/lib/python3.11/site-packages/",
+        "install -Dm644 org.clipcascade.ClipCascade.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop",
+        "install -Dm644 logo/logo.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png"
+      ]
+    }
+  ],
+  "cleanup" : [
+    "/include",
+    "/lib/pkgconfig",
+    "*.la",
+    "*.a"
+  ],
+  "finish-args" : [
+    "--share=ipc",
+    "--socket=x11",
+    "--socket=wayland",
+    "--share=network",
+    "--talk-name=org.freedesktop.portal.Desktop.Background",
+    "--talk-name=org.freedesktop.portal.FileChooser",
+    "--filesystem=home",
+    "--socket=session-bus",
+    "--talk-name=org.freedesktop.portal.Desktop",
+    "--talk-name=org.freedesktop.portal.Settings",
+    "--talk-name=org.kde.StatusNotifierWatcher",
+    "--talk-name=org.freedesktop.Notifications",
+    "--device=dri",
+    "--filesystem=host-os:ro",
+    "--filesystem=xdg-data/flatpak:ro",
+    "--filesystem=xdg-run/app/com.valvesoftware.Steam:create",
+    "--filesystem=~/.var/app/com.valvesoftware.Steam:create"
+  ],
+  "source-date-epoch" : 1735154537
+}

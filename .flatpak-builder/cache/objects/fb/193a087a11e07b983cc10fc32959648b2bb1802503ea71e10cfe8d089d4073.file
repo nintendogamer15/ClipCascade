@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ClipCascade
+Comment=Cross-platform clipboard manager
+Exec=clipcascade
+Icon=org.clipcascade.ClipCascade
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupNotify=true

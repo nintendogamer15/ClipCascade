@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ClipCascade
+Comment=Cross-device clipboard synchronization
+Icon=org.clipcascade.ClipCascade
+Exec=clipcascade
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+X-GNOME-UsesNotifications=true
