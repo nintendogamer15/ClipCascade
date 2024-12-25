@@ -2,8 +2,7 @@ app-id: org.clipcascade.ClipCascade
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
-command: python3
-args: ["/app/bin/clipcascade"]
+command: /app/bin/clipcascade
 
 build-options:
   strip: false
@@ -35,6 +34,20 @@ finish-args:
   - --filesystem=~/.var/app/com.valvesoftware.Steam:create
 
 modules:
+  - name: python3-cairo
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://github.com/pygobject/pycairo/releases/download/v1.25.1/pycairo-1.25.1.tar.gz
+        sha256: 7e2be4fbc3b4536f16db7a11982cbf713e75069a4d73d44fe5a49b68423f5c0c
+
+  - name: python3-gobject
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/pygobject/3.46/pygobject-3.46.0.tar.xz
+        sha256: 426008b2dad548c9af1c7b03b59df0440fde5c33f38fb5406b103a43d653cafc
+
   - name: python3-modules
     buildsystem: simple
     build-commands:
@@ -169,16 +182,26 @@ modules:
   - name: clipcascade
     buildsystem: simple
     build-commands:
-      - install -D ClipCascade_Desktop/src/main.py ${FLATPAK_DEST}/bin/clipcascade
+      # Convert Windows line endings to Unix and install main script
+      - sed 's/\r$//' src/main.py > clipcascade
+      - install -D clipcascade ${FLATPAK_DEST}/bin/clipcascade
       - chmod +x ${FLATPAK_DEST}/bin/clipcascade
-      - cp -r ClipCascade_Desktop/src/cli ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - cp -r ClipCascade_Desktop/src/clipboard ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - cp -r ClipCascade_Desktop/src/core ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - cp -r ClipCascade_Desktop/src/gui ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - cp -r ClipCascade_Desktop/src/stomp_ws ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - cp -r ClipCascade_Desktop/src/utils ${FLATPAK_DEST}/lib/python3.11/site-packages/
-      - install -Dm644 org.clipcascade.ClipCascade.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
-      - install -Dm644 logo/logo.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
+      - rm clipcascade
+      - cp -r src/cli ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - cp -r src/clipboard ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - cp -r src/core ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - cp -r src/gui ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - cp -r src/stomp_ws ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - cp -r src/utils ${FLATPAK_DEST}/lib/python3.11/site-packages/
+      - install -Dm644 ${FLATPAK_BUILDER_BUILDDIR}/desktop/org.clipcascade.ClipCascade.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 ${FLATPAK_BUILDER_BUILDDIR}/logo/logo.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
     sources:
       - type: dir
-        path: .
+        path: ClipCascade_Desktop/src
+        dest: src
+      - type: file
+        path: org.clipcascade.ClipCascade.desktop
+        dest: desktop
+      - type: dir
+        path: logo
+        dest: logo
