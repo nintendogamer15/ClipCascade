@@ -1,0 +1,11 @@
+--- Makefile.am.orig	2024-01-01 00:00:00.000000000 +0000
++++ Makefile.am	2024-01-01 00:00:00.000000000 +0000
+@@ -75,7 +75,7 @@ girdir = $(datadir)/gir-1.0
+ gir_DATA = $(INTROSPECTION_GIRS)
+ 
+ typelibsdir = $(libdir)/girepository-1.0
+-typelibdir = $(INTROSPECTION_TYPELIBDIR)
++typelibdir = $(libdir)/girepository-1.0
+ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+ 
+ CLEANFILES += $(gir_DATA) $(typelib_DATA)

@@ -1,0 +1,3 @@
+libindicator3_la-gen-indicator-service.xml.lo: \
+ gen-indicator-service.xml.c /usr/include/stdc-predef.h
+/usr/include/stdc-predef.h:

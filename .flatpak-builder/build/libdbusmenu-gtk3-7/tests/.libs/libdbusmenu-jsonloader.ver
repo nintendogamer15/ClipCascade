@@ -1,0 +1,4 @@
+{ global:
+dbusmenu_json_build_from_file;
+dbusmenu_json_build_from_node;
+local: *; };

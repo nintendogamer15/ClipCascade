@@ -1,0 +1,13 @@
+--- libindicator/indicator-object.c
++++ libindicator/indicator-object.c
+@@ -63,6 +63,10 @@ struct _IndicatorObjectPrivate {
+ 	GModule * module;
+ };
+ 
++struct _IndicatorObject {
++	GObject parent_instance;
++};
++
+ /* For get_entries_default */
+ 	IndicatorObjectEntry entry;
+ 	gboolean gotten_entries;

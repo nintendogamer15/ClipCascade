@@ -1,0 +1,11 @@
+--- libindicator/indicator-object.h
++++ libindicator/indicator-object.h
+@@ -94,8 +94,6 @@ struct _IndicatorObjectClass {
+ 
+ G_DECLARE_DERIVABLE_TYPE (IndicatorObject, indicator_object, INDICATOR, OBJECT, GObject)
+ 
+-GType indicator_object_get_type(void);
+-
+ IndicatorObject *  indicator_object_new_from_file (const gchar * file);
+ 
+ diff --git a/libindicator/indicator-object.c b/libindicator/indicator-object.c

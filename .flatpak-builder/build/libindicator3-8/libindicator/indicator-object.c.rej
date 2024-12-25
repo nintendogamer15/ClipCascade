@@ -1,0 +1,20 @@
+--- libindicator/indicator-object.c
++++ libindicator/indicator-object.c
+@@ -121,15 +123,13 @@ indicator_object_class_init (IndicatorObjectClass *klass)
+ 	                              g_cclosure_marshal_VOID__VOID,
+ 	                              G_TYPE_NONE, 0);
+ 
+-	g_type_class_add_private (klass, sizeof (IndicatorObjectPrivate));
+-
+ 	return;
+ }
+ 
+ static void
+-indicator_object_init (IndicatorObject *self)
++indicator_object_init (IndicatorObject * self)
+ {
+ 	g_debug("Building a new Indicator Object");
+ 
+-	IndicatorObjectPrivate * priv = G_TYPE_INSTANCE_GET_PRIVATE (self, INDICATOR_OBJECT_TYPE, IndicatorObjectPrivate);
++	IndicatorObjectPrivate * priv = indicator_object_get_instance_private(self);
+ 

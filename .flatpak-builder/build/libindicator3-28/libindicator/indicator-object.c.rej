@@ -1,0 +1,13 @@
+--- libindicator/indicator-object.c
++++ libindicator/indicator-object.c
+@@ -80,6 +80,10 @@ enum {
+ 	LAST_SIGNAL
+ };
+ 
++struct _IndicatorObject {
++	GObject parent_instance;
++};
++
+ typedef struct _IndicatorObjectPrivate {
+   gchar *name;
+   GList *entries;

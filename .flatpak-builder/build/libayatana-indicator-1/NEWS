@@ -1,0 +1,120 @@
+Overview of changes in libayatana-indicator 0.9.4
+
+  - src/indicator-service.c: Fix Robert's lastname in license header.
+  - cmake: Install library as library.
+
+Overview of changes in libayatana-indicator 0.9.3
+
+  - src/indicator-ng.c: Do not show tooltip on labels while the menu is
+    open.
+
+Overview of changes in libayatana-indicator 0.9.2
+
+  - Add tooltip support.
+  - src/indicator-service.c: Make failure to connect to the session DBus
+    fatal.
+
+Overview of changes in libayatana-indicator 0.9.1
+
+  - Clean up compilation flags.
+  - src/{CMakeLists.txt,indicator.symbols}: Don't export private symbols.
+    Immitate symbol exports as previously done with libtool.
+
+Overview of changes in libayatana-indicator 0.9.0
+
+  - src/indicator-ng.c: Make sure old menu item name is not NULL before
+    comparison. (Thanks to Andrej Shadura).
+  - Scale icons when loading from filename. (Thanks to Dani Llewellyn).
+  - data/: Drop ayatana-indicators.target (moved to libayatana-common).
+  - Update/add documentation.
+  - Rename library source folder to src/.
+  - tools/indicator-loader.c: Silence unused parameter warnings/errors
+    for various functions.
+  - Fix compiler warnings.
+  - Add Travis CI configuration.
+  - CMake port. Bye bye autotools.
+
+Overview of changes in libayatana-indicator 0.8.4
+
+  - libayatana-indicator/indicator-ng.c: Only run gtk_box_set_spacing()
+    if object to operate on is a GTK_BOX.
+  - Fix unit tests during package build. (Properly wrap around Xvfb
+    and dbus-wrapper).
+
+Overview of changes in libayatana-indicator 0.8.3
+
+  - indicator-ng: Fix menu resizing for all themes.
+
+Overview of changes in libayatana-indicator 0.8.2
+
+  - Workaround for themes with scrolling arrows on the
+    menu borders: disable menu arrows.
+  - indicator-ng.c: Fix padding and spacing for hidden indicator item labels.
+  - Fix duplicate location in the datetime indicator (and
+    potentially other duplicated menu item flaws).
+
+Overview of changes in libayatana-indicator 0.8.1
+
+  - Enable menu scrolling + reset offset on popup. Resolves
+    display problems with Indicator Messges consumers that
+    provide a too-long list of unread messages (so that the
+    scrolling kicks in in the indicator's menu).
+  - Fix IDO insertion index in Indicator Messages with multiple
+    clients.
+
+Overview of changes in libayatana-indicator 0.8.0
+
+  - This release breaks compatibility with all system indicators before
+    0.8.0 (for power indicator: before 2.1.0).
+  - configure.ac: Bump IDO_REQUIRED_VERSION to 0.8.0.
+  - Fix width of menu panes.
+  - Use ayatanamenuitemfactory.(c|h) from ayatana-ido. Reduce code duplications.
+    This also fixes renderer freezes in Ubuntu 20.04 (likely other versions
+    of Ubuntu, too).
+  - libayatana-indicator/indicator-ng.c: Try to prevent cascading failure if
+    IDO creation fails.
+  - Rename Ayatana Indicators specific x-canonical-* attributes to
+    x-ayatana-* (esp. x-ayatana-type). This makes Ayatana Indicators
+    work on Ubuntu.
+  - Use ayatana-indicators.target as the systemd lifecycle unit, not
+    ayatana-indicators-pre.target.
+  - Fix tests and deprecations.
+  - libayatana-indicator/indicator-ng.c: Resize open menus as items change.
+
+Overview of changes in libayatana-indicator 0.7.1
+
+  - Display and connect the Indicator Messages widgets
+
+Overview of changes in libayatana-indicator 0.7.0
+
+  - Display IDO widgets/Use own action muxer/Allow IDO CSS styling.
+    Thanks to Robert Tari for working on this awesome improvement /
+    bug fix. This has been long waited for!!!
+  - Make building of `ayatana-indicator-loader3` optional. Thanks
+    to Alexander Schlarb.
+
+Overview of changes in libayatana-indicator 0.6.3
+
+  - **/Makefile.am: Set -DGTK_DISABLE_DEPRECATED for gtk2 builds. Fixes
+    FTBFS against Glib2.0 >= 2.62.
+  - libayatana-indicator/indicator-object.c: Typo fix in comment.
+  - GObject private API/ABI: Get rid of g_type_class_add_private() and
+    use DEFINE_TYPE_WITH_PRIVATE().
+
+Overview of changes in libayatana-indicator 0.6.2
+
+  - libayatana-indicator/indicator-ng.c: Type cast assignments from
+    g_object_ref_sink().
+  - Makefile.am: Drop distcheck features.
+
+Overview of changes in libayatana-indicator 0.6.1
+
+  - configure.ac: Support pkg-config (<< 0.27).
+  - autotools: Make systemd dependency optional. This makes
+    libayatana-indicator available on Debian GNU/kFreeBSD and
+    Debian GNU/Hurd.
+
+Overview of changes in libayatana-indicator 0.6.0
+
+  - Fork libayatana-indicator from Ubuntu's libindicator shared
+    library.

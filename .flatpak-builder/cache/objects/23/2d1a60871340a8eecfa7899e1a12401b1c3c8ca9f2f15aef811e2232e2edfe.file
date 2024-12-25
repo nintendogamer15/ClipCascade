@@ -1,0 +1,27 @@
+[Application]
+name=org.clipcascade.ClipCascade
+runtime=org.freedesktop.Platform/x86_64/23.08
+sdk=org.freedesktop.Sdk/x86_64/23.08
+command=python3
+
+[Context]
+shared=network;ipc;
+sockets=x11;wayland;session-bus;
+devices=dri;
+filesystems=home;~/.var/app/com.valvesoftware.Steam:create;host-os:ro;xdg-data/flatpak:ro;xdg-run/app/com.valvesoftware.Steam:create;
+
+[Session Bus Policy]
+org.freedesktop.portal.FileChooser=talk
+org.kde.StatusNotifierWatcher=talk
+org.freedesktop.Notifications=talk
+org.freedesktop.portal.Desktop.Background=talk
+org.freedesktop.portal.Desktop=talk
+org.freedesktop.portal.Settings=talk
+
+[Extension org.clipcascade.ClipCascade.Locale]
+directory=share/runtime/locale
+autodelete=true
+locale-subset=true
+
+[Build]
+built-extensions=org.clipcascade.ClipCascade.Locale;

@@ -1,0 +1,68 @@
+#!/usr/bin/make -f
+
+FLAVOURS = gtk2 gtk3
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
+COMMON_CONFIGURE_FLAGS = -DENABLE_TESTS=ON
+
+CONFIGURE_FLAGS_gtk2 = -DFLAVOUR_GTK2=ON -DFLAVOUR_GTK3=OFF -DENABLE_TESTS=ON -DENABLE_COVERAGE=OFF
+CONFIGURE_FLAGS_gtk3 = -DFLAVOUR_GTK3=ON -DFLAVOUR_GTK2=OFF -DENABLE_TESTS=ON -DENABLE_COVERAGE=OFF
+
+LDFLAGS += -Wl,-z,defs -Wl,--as-needed
+
+export G_MESSAGES_DEBUG = all
+export DPKG_GENSYMBOLS_CHECK_LEVEL = 4
+
+%:
+	dh $@
+
+override_dh_auto_configure: $(FLAVOURS:%=doconfigure-%)
+
+doconfigure-%:
+	DH_VERBOSE=1 dh_auto_configure --builddirectory=builddir/$* -- $(COMMON_CONFIGURE_FLAGS) $(CONFIGURE_FLAGS_$*)
+
+override_dh_auto_build: $(FLAVOURS:%=dobuild-%)
+
+dobuild-%:
+	dh_auto_build --builddirectory=builddir/$*
+
+override_dh_auto_test:
+	xvfb-run -a dh_auto_test --no-parallel --builddirectory=builddir/gtk2
+	xvfb-run -a dh_auto_test --no-parallel --builddirectory=builddir/gtk3
+
+override_dh_auto_install: $(FLAVOURS:%=doinstall-%)
+
+doinstall-%:
+	dh_auto_install --builddirectory=builddir/$* --destdir=debian/tmp/$*
+
+override_dh_install:
+	find debian/tmp -name \*.la -delete
+	find debian/tmp -name libdummy-indicator\* -delete
+	rm -f debian/tmp/gtk2/usr/share/libayatana-indicator/80indicator-debugging
+	dh_install -plibayatana-indicator7 --sourcedir=debian/tmp/gtk2
+	dh_install -plibayatana-indicator-dev --sourcedir=debian/tmp/gtk2
+	dh_install -plibayatana-indicator3-7 --sourcedir=debian/tmp/gtk3
+	dh_install -plibayatana-indicator3-dev --sourcedir=debian/tmp/gtk3
+	dh_install -plibayatana-indicator3-tools --sourcedir=debian/tmp/gtk3
+
+override_dh_missing:
+	dh_missing -plibayatana-indicator7 --sourcedir=debian/tmp/gtk2
+	dh_missing -plibayatana-indicator-dev --sourcedir=debian/tmp/gtk2
+	dh_missing -plibayatana-indicator3-7 --sourcedir=debian/tmp/gtk3
+	dh_missing -plibayatana-indicator3-dev --sourcedir=debian/tmp/gtk3
+	dh_missing -plibayatana-indicator3-tools --sourcedir=debian/tmp/gtk3
+
+override_dh_makeshlibs:
+	dh_makeshlibs -plibayatana-indicator7 -V 'libayatana-indicator7 (>= 0.6.0)'
+	dh_makeshlibs -plibayatana-indicator3-7 -V 'libayatana-indicator3-7 (>= 0.6.0)'
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -Rf builddir/
+	rm -Rf build-aux/
+
+get-orig-source:
+	uscan --noconf --force-download --rename --download-current-version --destdir=..

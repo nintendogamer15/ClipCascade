@@ -1,0 +1,11 @@
+--- libindicator/indicator-object.c
++++ libindicator/indicator-object.c
+@@ -121,8 +123,6 @@ static void indicator_object_dispose  (GObject * object);
+ static void indicator_object_finalize (GObject * object);
+ static void indicator_object_get_property (GObject * object, guint prop_id, GValue * value, GParamSpec * pspec);
+ 
+-G_DEFINE_TYPE (IndicatorObject, indicator_object, G_TYPE_OBJECT);
+-
+ static void
+ indicator_object_class_init (IndicatorObjectClass * klass)
+ {
